@@ -1,0 +1,1 @@
+web: cd smart-city-traveler-frontend && npx serve -s build -l $PORT

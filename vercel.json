@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "name": "smart-city-traveler",
+  "buildCommand": "cd smart-city-traveler-frontend && npm install && npm run build",
+  "outputDirectory": "smart-city-traveler-frontend/build",
+  "installCommand": "cd smart-city-traveler-frontend && npm install",
+  "functions": {
+    "api/**/*.js": {
+      "memory": 256,
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "CI": "false",
+    "DISABLE_ESLINT_PLUGIN": "true",
+    "GENERATE_SOURCEMAP": "false",
+    "TSC_COMPILE_ON_ERROR": "true",
+    "ESLINT_NO_DEV_ERRORS": "true"
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
+
+

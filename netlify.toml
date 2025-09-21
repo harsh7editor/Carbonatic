@@ -1,0 +1,24 @@
+[build]
+  base = "smart-city-traveler-frontend"
+  publish = "smart-city-traveler-frontend/build"
+  command = "CI=false npm run build"
+
+[build.environment]
+  CI = "false"
+  GENERATE_SOURCEMAP = "false"
+  DISABLE_ESLINT_PLUGIN = "true"
+  TSC_COMPILE_ON_ERROR = "true"
+  ESLINT_NO_DEV_ERRORS = "true"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"

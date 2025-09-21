@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: smart-city-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: smart_city_traveler
+      MYSQL_USER: traveler
+      MYSQL_PASSWORD: traveler123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - smart-city-network
+
+  backend:
+    build: ./smart-city-traveler-backend
+    container_name: smart-city-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/smart_city_traveler?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: traveler
+      SPRING_DATASOURCE_PASSWORD: traveler123
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+      ZOMATO_API_KEY: ${ZOMATO_API_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - smart-city-network
+
+  frontend:
+    build: ./smart-city-traveler-frontend
+    container_name: smart-city-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - smart-city-network
+
+volumes:
+  mysql_data:
+
+networks:
+  smart-city-network:
+    driver: bridge
